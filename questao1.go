@@ -7,81 +7,84 @@ import (
 	"os"
 )
 
-func pinger(c chan string) {
+type jogador struct{
+
+	nome string
+
+}
+
+type partida struct{
+
+	j1 jogador
+	j2 jogador
+	game int
+	set int
+	match int
+}
+
+func jogar(c chan string, p jogador) {
+
 	rand.Seed(time.Now().UnixNano())
 	shot := rand.Intn(10)
+
 	for shot > -1 {
 
 		switch {
 		case shot < 3:
-			for i := 0; i<1; i++ {
-				c <- "erro ping"
-			}
+			c <- p.nome+ ": errou"
 		case shot >= 3:
-			for i := 0;i<1 ; i++ {
-				c <- "ping"
-			}
+			c <- p.nome + ": acertou"
 		}
+
 		rand.Seed(time.Now().UnixNano())
 		shot = rand.Intn(10)
 	}
 }
 
-func ponger(c chan string) {
-	rand.Seed(time.Now().UnixNano())
-	shot := rand.Intn(10)
-	for shot > -1 {
-		switch {
-		case shot < 3:
-			for i := 0;i<1 ; i++ {
-				c <- "erro pong"
-			}
-		case shot >= 3:
-			for i := 0;i<1 ; i++ {
-				c <- "pong"
-			}
-		}
-		rand.Seed(time.Now().UnixNano())
-		shot = rand.Intn(10)
-	}
-}
-
-func score(c chan string, p int) {
+func score(c chan string, p partida) {
 
 	sc_i := 0
 	sc_o := 0
-	for sc_i < p && sc_o < p{
-		msg := <- c
 
+	for sc_i < p.game && sc_o < p.game{
+
+		msg := <- c
 		fmt.Println(msg)
 		time.Sleep(time.Second * 1)
 
-		if msg == "erro ping" {
+		if msg == p.j1.nome + ": errou"{
 			sc_o +=1
-			fmt.Printf("Ping %v x Pong %v \n", sc_i, sc_o)
-		} else if msg == "erro pong" {
+			fmt.Printf("%v %v x %v %v \n", p.j1.nome, sc_i, p.j2.nome, sc_o)
+		} else if msg == p.j2.nome + ": errou" {
 			sc_i +=1
-			fmt.Printf("Ping %v x Pong %v \n", sc_i, sc_o)
+			fmt.Printf("%v %v x %v %v \n", p.j1.nome, sc_i, p.j2.nome, sc_o)
 		} else {
 			continue
 		}
 	}
+
 	fmt.Printf("\nResultado final:\n")
-	fmt.Printf("Ping %v x Pong %v \n", sc_i, sc_o)
+	fmt.Printf("%v %v x %v %v \n", p.j1.nome, sc_i, p.j2.nome, sc_o)
 	os.Exit(0)
-	close(c)
 
 }
 
 func main() {
-	var c = make(chan string)
 
+	var c = make(chan string)
 	var points int
+
+	fmt.Printf("Defina os números de pontos:")
 	fmt.Scanln(&points)
 
-	go pinger(c)
-	go ponger(c)
-	go score(c, points)
+	jogador1 := jogador{"Nadal"}
+	jogador2 := jogador{"Guga"}
+
+	partida := partida{jogador1, jogador2,points,1, 1}
+
+	go jogar(c, jogador1)
+	go jogar(c, jogador2)
+	go score(c, partida)
 
 	var input string
 	fmt.Scanln(&input)
