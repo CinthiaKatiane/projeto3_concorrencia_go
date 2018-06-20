@@ -10,6 +10,9 @@ import (
 type jogador struct{
 
 	nome string
+	w_pontos int
+	w_game int
+	w_set int
 
 }
 
@@ -17,9 +20,9 @@ type partida struct{
 
 	j1 jogador
 	j2 jogador
+	pontos int
 	game int
 	set int
-	match int
 }
 
 func jogar(c chan string, p jogador) {
@@ -43,31 +46,38 @@ func jogar(c chan string, p jogador) {
 
 func score(c chan string, p partida) {
 
-	sc_i := 0
-	sc_o := 0
+	for p.j1.w_set < p.set && p.j2.w_set < p.set {
 
-	for sc_i < p.game && sc_o < p.game{
+		for p.j1.w_game < p.game && p.j2.w_game < p.game{
 
-		msg := <- c
-		fmt.Println(msg)
-		time.Sleep(time.Second * 1)
+			pt1 := 0
+			pt2 := 0
 
-		if msg == p.j1.nome + ": errou"{
-			sc_o +=1
-			fmt.Printf("%v %v x %v %v \n", p.j1.nome, sc_i, p.j2.nome, sc_o)
-		} else if msg == p.j2.nome + ": errou" {
-			sc_i +=1
-			fmt.Printf("%v %v x %v %v \n", p.j1.nome, sc_i, p.j2.nome, sc_o)
-		} else {
-			continue
+			for pt1 < p.pontos && pt2 < p.pontos {
+
+				msg := <-c
+				fmt.Println(msg)
+				time.Sleep(time.Second * 1)
+
+				if msg == p.j1.nome+": errou" {
+					pt2 += 1
+					fmt.Printf("%v %v x %v %v \n", p.j1.nome, pt1, p.j2.nome, pt2)
+				} else if msg == p.j2.nome+": errou" {
+					pt1 += 1
+					fmt.Printf("%v %v x %v %v \n", p.j1.nome, pt1, p.j2.nome, pt2)
+				} else {
+					continue
+				}
+			}
+			fmt.Printf("\nResultado final do game:\n")
+			fmt.Printf("%v %v x %v %v \n", p.j1.nome, pt1, p.j2.nome, pt2)
+
 		}
 	}
-
-	fmt.Printf("\nResultado final:\n")
-	fmt.Printf("%v %v x %v %v \n", p.j1.nome, sc_i, p.j2.nome, sc_o)
 	os.Exit(0)
-
 }
+
+
 
 func main() {
 
@@ -77,10 +87,10 @@ func main() {
 	fmt.Printf("Defina os números de pontos:")
 	fmt.Scanln(&points)
 
-	jogador1 := jogador{"Nadal"}
-	jogador2 := jogador{"Guga"}
+	jogador1 := jogador{"Nadal",0,0,0,}
+	jogador2 := jogador{"Guga",0,0,0}
 
-	partida := partida{jogador1, jogador2,points,1, 1}
+	partida := partida{jogador1, jogador2,points,2, 2}
 
 	go jogar(c, jogador1)
 	go jogar(c, jogador2)

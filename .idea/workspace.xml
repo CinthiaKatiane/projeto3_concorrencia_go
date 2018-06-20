@@ -16,8 +16,8 @@
       <file leaf-file-name="questao1.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/questao1.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1239">
-              <caret line="83" lean-forward="true" selection-start-line="83" selection-end-line="83" />
+            <state relative-caret-position="1008">
+              <caret line="48" selection-start-line="48" selection-end-line="48" />
               <folding>
                 <element signature="e#14#58#0" expanded="true" />
               </folding>
@@ -26,6 +26,11 @@
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>sc</find>
+    </findStrings>
   </component>
   <component name="GOROOT" path="$USER_HOME$/go" />
   <component name="Git.Settings">
@@ -115,7 +120,7 @@
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="right" id="Database" order="0" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.36557788" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.36557788" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="3" />
@@ -139,8 +144,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/questao1.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1239">
-          <caret line="83" lean-forward="true" selection-start-line="83" selection-end-line="83" />
+        <state relative-caret-position="1008">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
           <folding>
             <element signature="e#14#58#0" expanded="true" />
           </folding>
