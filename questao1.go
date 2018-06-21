@@ -45,35 +45,57 @@ func jogar(c chan string, p jogador) {
 }
 
 func score(c chan string, p partida) {
-
+	i := 0
+	j := 0
 	for p.j1.w_set < p.set && p.j2.w_set < p.set {
+		i = 0
+		j++
+		p.j1.w_game = 0
+		p.j2.w_game = 0
 
 		for p.j1.w_game < p.game && p.j2.w_game < p.game{
+			i++
+			p.j1.w_pontos = 0
+			p.j2.w_pontos = 0
 
-			pt1 := 0
-			pt2 := 0
-
-			for pt1 < p.pontos && pt2 < p.pontos {
+			for p.j1.w_pontos < p.pontos && p.j2.w_pontos < p.pontos {
 
 				msg := <-c
 				fmt.Println(msg)
 				time.Sleep(time.Second * 1)
 
 				if msg == p.j1.nome+": errou" {
-					pt2 += 1
-					fmt.Printf("%v %v x %v %v \n", p.j1.nome, pt1, p.j2.nome, pt2)
+					p.j2.w_pontos += 1
+					fmt.Printf("%v %v x %v %v \n", p.j1.nome, p.j1.w_pontos, p.j2.nome, p.j2.w_pontos)
 				} else if msg == p.j2.nome+": errou" {
-					pt1 += 1
-					fmt.Printf("%v %v x %v %v \n", p.j1.nome, pt1, p.j2.nome, pt2)
+					p.j1.w_pontos += 1
+					fmt.Printf("%v %v x %v %v \n", p.j1.nome, p.j1.w_pontos, p.j2.nome, p.j2.w_pontos)
 				} else {
 					continue
 				}
 			}
-			fmt.Printf("\nResultado final do game:\n")
-			fmt.Printf("%v %v x %v %v \n", p.j1.nome, pt1, p.j2.nome, pt2)
+
+			if p.j1.w_pontos > p.j2.w_pontos {
+				p.j1.w_game += 1
+			} else {
+				p.j2.w_game += 1
+			}
+			fmt.Printf("\nResultado final do game %v:\n", i)
+			fmt.Printf("%v %v x %v %v \n\n", p.j1.nome, p.j1.w_pontos, p.j2.nome, p.j2.w_pontos)
 
 		}
+
+		if p.j1.w_game > p.j2.w_game {
+			p.j1.w_set += 1
+		} else {
+			p.j2.w_set += 1
+		}
+		fmt.Printf("\nResultado final do set %v:\n", j)
+		fmt.Printf("%v %v x %v %v \n\n", p.j1.nome, p.j1.w_game, p.j2.nome, p.j2.w_game)
+
 	}
+	fmt.Printf("\nResultado final do match:\n")
+	fmt.Printf("%v %v x %v %v \n\n", p.j1.nome, p.j1.w_set, p.j2.nome, p.j2.w_set)
 	os.Exit(0)
 }
 
